@@ -1,119 +1,101 @@
 # EcoTrack - Sustainable Metrics Ecosystem
 
-O **EcoTrack** é um ecossistema de alta escala desenvolvido para monitorar e processar métricas de sustentabilidade em tempo real. O projeto utiliza uma arquitetura de monorepo para integrar múltiplos serviços, garantindo consistência técnica e agilidade no desenvolvimento.
+O **EcoTrack** é um ecossistema de alta escala desenvolvido para monitorar e processar métricas de sustentabilidade em tempo real. O projeto utiliza uma arquitetura de monorepo orquestrada pelo **Nx** para integrar múltiplos serviços, garantindo consistência técnica e agilidade no desenvolvimento.
 
 ## 🚀 Tecnologias Core
 
 ### Monorepo & Tooling
 
-- **NX:** Orquestração de monorepo e build system.
-- **Commitzen & Husky:** Padronização de commits e git hooks.
+- **NX:** Orquestração de monorepo e build system inteligente.
+- **Commitzen & Husky:** Padronização de commits e git hooks para qualidade de código.
 - **Vitest:** Testes unitários de alta performance.
 
 ### Frontend (Next.js App)
 
 - **Next.js 16 (App Router)**
-- **Tailwind CSS & Shadcn/UI:** Interface moderna e acessível.
-- **TanStack Query (React Query):** Gerenciamento de estado de servidor.
-- **Zustand:** Estado global leve.
-- **Zod & React Hook Form:** Validação de formulários robusta.
+- **Tailwind CSS & Shadcn/UI:** Interface moderna, responsiva e acessível.
+- **TanStack Query (React Query):** Gerenciamento eficiente de estado de servidor e cache.
+- **Zustand:** Gerenciamento de estado global leve.
 
 ### Backend (NestJS)
 
-- **NestJS (Express):** API Gateway e serviços de processamento.
-- **Drizzle ORM:** TypeScript-first ORM para interação com **PostgreSQL**.
-- **RabbitMQ:** Mensageria assíncrona para processamento de métricas.
-- **Redis:** Camada de cache para leitura rápida de dashboards.
-
-### DevOps & Infra
-
-- **Docker & Docker Compose:** Containerização de todo o ambiente.
-- **Nginx:** Proxy reverso para roteamento de tráfego local.
-- **GitHub Actions:** Pipeline de CI/CD para testes e builds automatizados.
-
-## Arquitetura do Sistema
-
-O projeto é dividido em três aplicações principais dentro do monorepo:
-
-1.  **Web Dashboard (Next.js):** Interface administrativa para visualização de dados.
-2.  **API Gateway (NestJS):** Ponto de entrada que recebe dados e os despacha para filas.
-3.  **Metrics Worker (NestJS):** Serviço isolado que consome o RabbitMQ, aplica regras de negócio e persiste no banco.
-
-## 🛠️ Como rodar o projeto
-
-Este projeto utiliza **Nx** para gerenciar as aplicações. Abaixo estão os comandos disponíveis no `package.json` raiz:
-
-### Comandos do Backend (NestJS)
-
-- `npm run api:dev`: Inicia a API em modo de desenvolvimento.
-- `npm run api:build`: Gera o build de produção da API.
-- `npm run api:lint`: Executa o linting no código da API.
-
-### Comandos do Frontend (Next.js)
-
-- `npm run web:dev`: Inicia o dashboard em modo de desenvolvimento.
-- `npm run web:build`: Gera o build de produção do dashboard.
-- `npm run web:lint`: Executa o linting no código do dashboard.
-
-### Outros Comandos
-
-- `npx nx graph`: Visualiza o grafo de dependências do monorepo.
+- **NestJS (Express):** API Gateway robusto e serviços de processamento assíncrono.
+- **Drizzle ORM:** TypeScript-first ORM para interação segura com **PostgreSQL**.
+- **RabbitMQ:** Mensageria para desacoplamento e processamento escalável.
 
 ---
 
-## Proposta de Projeto
+## 🛠️ Como Rodar o Projeto
 
-Arquitetura do MVP:
+Este monorepo utiliza o **Nx** para gerenciar as aplicações. Os comandos devem ser executados na **raiz do projeto**.
 
-App Frontend (Next.js): Dashboard para visualizar métricas em tempo real e cadastrar novos sensores.
+### 1. Rodar Tudo em Paralelo (Recomendado)
 
-API Gateway (NestJS): Recebe requisições, valida com Zod e envia para a fila (RabbitMQ).
+Para iniciar tanto o Frontend quanto o Backend simultaneamente:
 
-Worker Service (NestJS): Consome a fila, processa os dados (ex: cálculo de média de CO2) e salva no PostgreSQL.
-
-Cache (Redis): Armazena o "Estado Atual" dos sensores para que o dashboard não precise consultar o banco toda hora.
-
-Estrutura do monorepo NX:
-
-```
-apps/
-    web-dashboard (Next.js)
-    api-gateway (NestJS)
-    data-processor (NestJS - Worker)
-libs/
-    ui-components (Shadcn + Tailwind)
-    shared-schemas (Zod schemas compartilhados entre Front e Back)
-    domain (Drizzle schemas + Zod - Compartilhado entre API e Worker)
+```bash
+npm run dev:all
 ```
 
-Fluxo de CI/CD (GitHub Actions):
+_Este comando utiliza `nx run-many` para subir todos os serviços de desenvolvimento de uma vez._
 
-- **Lint/Test:** Husky impede commits ruins. O GitHub Actions roda `nx affected:test` (testa só o que mudou).
-- **Build:** Gera as imagens Docker.
-- **Simulação de Deploy:** Utilizar o Docker Compose para subir todo o ambiente (DB, Redis, Rabbit, Web, API) com um único comando.
+### 2. Rodar Aplicações Individualmente
 
-Roteiro de Implementação:
+Se preferir rodar em terminais separados:
+
+**Frontend (Next.js)**
+
+- `npm run web:dev`
+- **URL:** [http://localhost:3000](http://localhost:3000)
+
+**Backend (NestJS)**
+
+- `npm run api:dev`
+- **URL:** [http://localhost:3333/api](http://localhost:3333/api)
+
+---
+
+## 📡 Configuração de Portas
+
+Para evitar conflitos de execução simultânea, as portas foram padronizadas:
+
+| Serviço         | Tecnologia | Porta  | Contexto                  |
+| :-------------- | :--------- | :----- | :------------------------ |
+| **Página Web**  | Next.js    | `3000` | Dashboard de indicadores  |
+| **API Gateway** | NestJS     | `3333` | Endpoint principal da API |
+
+---
+
+## 🏗️ Arquitetura do Sistema
+
+O projeto é estruturado dentro da pasta `apps/`:
+
+1.  **web (`apps/web`):** Dashboard administrativo para visualização de métricas.
+2.  **api (`apps/api`):** Gateway que recebe dados, valida e despacha para processamento.
+
+### Outros Comandos Úteis
+
+- `npm run api:build` / `npm run web:build`: Gera o build de produção.
+- `npm run api:lint` / `npm run web:lint`: Executa a verificação estética e de erros do código.
+- `npx nx graph`: Abre uma interface visual para ver as dependências do projeto.
+
+---
+
+## 📝 Roadmap de Implementação
 
 **Fase 1: O Alicerce (MVP)**
 
-- Configurar o NX Workspace com as apps.
-- Setup do Docker Compose básico (Postgres + Redis).
-- Criar um CRUD simples no NestJS com Swagger e Drizzle.
-- Frontend Next.js consumindo a API com TanStack Query.
+- [x] Configurar NX Workspace e Apps base.
+- [x] Padronizar comandos e portas de execução.
+- [ ] Setup do Docker Compose (Postgres + Redis).
+- [ ] CRUD inicial com NestJS e Drizzle.
 
-**Fase 2: Mensageria e Background Jobs**
+**Fase 2: Mensageria e Escalabilidade**
 
-- Adicionar RabbitMQ ao Docker Compose.
-- Transformar o salvamento de dados em um processo assíncrono: a API posta na fila, o Worker salva no banco.
-- Implementar Cache Read-aside com Redis na API.
+- [ ] Integração com RabbitMQ para processamento assíncrono.
+- [ ] Implementação de cache com Redis.
 
-**Fase 3: Qualidade e Automação**
+**Fase 3: Qualidade e Monitoramento**
 
-- Configurar Husky, Commitzen e Lint-staged.
-- Criar testes unitários no Back e Testes de E2E com Playwright no Front.
-- Configurar o workflow do GitHub Actions para validar o nx affected.
-
-**Fase 4: Complexidade Avançada (Escalabilidade)**
-
-- WebSockets: Fazer o Worker avisar o Frontend via Socket.io (ou via Redis Pub/Sub) que o dado foi processado, atualizando o gráfico em tempo real sem refresh.
-- Prometheus/Grafana: Adicionar containers de monitoramento para ler métricas da API NestJS.
+- [ ] Testes E2E com Playwright.
+- [ ] Monitoramento com Prometheus/Grafana.
