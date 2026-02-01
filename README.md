@@ -1,102 +1,119 @@
-# New Nx Repository
+# EcoTrack - Sustainable Metrics Ecosystem
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+O **EcoTrack** é um ecossistema de alta escala desenvolvido para monitorar e processar métricas de sustentabilidade em tempo real. O projeto utiliza uma arquitetura de monorepo para integrar múltiplos serviços, garantindo consistência técnica e agilidade no desenvolvimento.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+## 🚀 Tecnologias Core
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!## Generate a library
+### Monorepo & Tooling
 
-```sh
-npx nx g @nx/js:lib packages/pkg1 --publishable --importPath=@my-org/pkg1
+- **NX:** Orquestração de monorepo e build system.
+- **Commitzen & Husky:** Padronização de commits e git hooks.
+- **Vitest:** Testes unitários de alta performance.
+
+### Frontend (Next.js App)
+
+- **Next.js 16 (App Router)**
+- **Tailwind CSS & Shadcn/UI:** Interface moderna e acessível.
+- **TanStack Query (React Query):** Gerenciamento de estado de servidor.
+- **Zustand:** Estado global leve.
+- **Zod & React Hook Form:** Validação de formulários robusta.
+
+### Backend (NestJS)
+
+- **NestJS (Express):** API Gateway e serviços de processamento.
+- **Drizzle ORM:** TypeScript-first ORM para interação com **PostgreSQL**.
+- **RabbitMQ:** Mensageria assíncrona para processamento de métricas.
+- **Redis:** Camada de cache para leitura rápida de dashboards.
+
+### DevOps & Infra
+
+- **Docker & Docker Compose:** Containerização de todo o ambiente.
+- **Nginx:** Proxy reverso para roteamento de tráfego local.
+- **GitHub Actions:** Pipeline de CI/CD para testes e builds automatizados.
+
+## Arquitetura do Sistema
+
+O projeto é dividido em três aplicações principais dentro do monorepo:
+
+1.  **Web Dashboard (Next.js):** Interface administrativa para visualização de dados.
+2.  **API Gateway (NestJS):** Ponto de entrada que recebe dados e os despacha para filas.
+3.  **Metrics Worker (NestJS):** Serviço isolado que consome o RabbitMQ, aplica regras de negócio e persiste no banco.
+
+## 🛠️ Como rodar o projeto
+
+Este projeto utiliza **Nx** para gerenciar as aplicações. Abaixo estão os comandos disponíveis no `package.json` raiz:
+
+### Comandos do Backend (NestJS)
+
+- `npm run api:dev`: Inicia a API em modo de desenvolvimento.
+- `npm run api:build`: Gera o build de produção da API.
+- `npm run api:lint`: Executa o linting no código da API.
+
+### Comandos do Frontend (Next.js)
+
+- `npm run web:dev`: Inicia o dashboard em modo de desenvolvimento.
+- `npm run web:build`: Gera o build de produção do dashboard.
+- `npm run web:lint`: Executa o linting no código do dashboard.
+
+### Outros Comandos
+
+- `npx nx graph`: Visualiza o grafo de dependências do monorepo.
+
+---
+
+## Proposta de Projeto
+
+Arquitetura do MVP:
+
+App Frontend (Next.js): Dashboard para visualizar métricas em tempo real e cadastrar novos sensores.
+
+API Gateway (NestJS): Recebe requisições, valida com Zod e envia para a fila (RabbitMQ).
+
+Worker Service (NestJS): Consome a fila, processa os dados (ex: cálculo de média de CO2) e salva no PostgreSQL.
+
+Cache (Redis): Armazena o "Estado Atual" dos sensores para que o dashboard não precise consultar o banco toda hora.
+
+Estrutura do monorepo NX:
+
+```
+apps/
+    web-dashboard (Next.js)
+    api-gateway (NestJS)
+    data-processor (NestJS - Worker)
+libs/
+    ui-components (Shadcn + Tailwind)
+    shared-schemas (Zod schemas compartilhados entre Front e Back)
+    domain (Drizzle schemas + Zod - Compartilhado entre API e Worker)
 ```
 
-## Run tasks
+Fluxo de CI/CD (GitHub Actions):
 
-To build the library use:
+- **Lint/Test:** Husky impede commits ruins. O GitHub Actions roda `nx affected:test` (testa só o que mudou).
+- **Build:** Gera as imagens Docker.
+- **Simulação de Deploy:** Utilizar o Docker Compose para subir todo o ambiente (DB, Redis, Rabbit, Web, API) com um único comando.
 
-```sh
-npx nx build pkg1
-```
+Roteiro de Implementação:
 
-To run any task with Nx use:
+**Fase 1: O Alicerce (MVP)**
 
-```sh
-npx nx <target> <project-name>
-```
+- Configurar o NX Workspace com as apps.
+- Setup do Docker Compose básico (Postgres + Redis).
+- Criar um CRUD simples no NestJS com Swagger e Drizzle.
+- Frontend Next.js consumindo a API com TanStack Query.
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+**Fase 2: Mensageria e Background Jobs**
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- Adicionar RabbitMQ ao Docker Compose.
+- Transformar o salvamento de dados em um processo assíncrono: a API posta na fila, o Worker salva no banco.
+- Implementar Cache Read-aside com Redis na API.
 
-## Versioning and releasing
+**Fase 3: Qualidade e Automação**
 
-To version and release the library use
+- Configurar Husky, Commitzen e Lint-staged.
+- Criar testes unitários no Back e Testes de E2E com Playwright no Front.
+- Configurar o workflow do GitHub Actions para validar o nx affected.
 
-```
-npx nx release
-```
+**Fase 4: Complexidade Avançada (Escalabilidade)**
 
-Pass `--dry-run` to see what would happen without actually releasing the library.
-
-[Learn more about Nx release &raquo;](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Keep TypeScript project references up to date
-
-Nx automatically updates TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) in `tsconfig.json` files to ensure they remain accurate based on your project dependencies (`import` or `require` statements). This sync is automatically done when running tasks such as `build` or `typecheck`, which require updated references to function correctly.
-
-To manually trigger the process to sync the project graph dependencies information to the TypeScript project references, run the following command:
-
-```sh
-npx nx sync
-```
-
-You can enforce that the TypeScript project references are always in the correct state when running in CI by adding a step to your CI job configuration that runs the following command:
-
-```sh
-npx nx sync:check
-```
-
-[Learn more about nx sync](https://nx.dev/reference/nx-commands#sync)
-
-## Nx Cloud
-
-Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
-
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-### Set up CI (non-Github Actions CI)
-
-**Note:** This is only required if your CI provider is not GitHub Actions.
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
-```
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/nx-api/js?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- WebSockets: Fazer o Worker avisar o Frontend via Socket.io (ou via Redis Pub/Sub) que o dado foi processado, atualizando o gráfico em tempo real sem refresh.
+- Prometheus/Grafana: Adicionar containers de monitoramento para ler métricas da API NestJS.
