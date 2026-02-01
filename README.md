@@ -1,6 +1,22 @@
 # EcoTrack - Sustainable Metrics Ecosystem
 
-O **EcoTrack** é um ecossistema de alta escala desenvolvido para monitorar e processar métricas de sustentabilidade em tempo real. O projeto utiliza uma arquitetura de monorepo orquestrada pelo **Nx** para integrar múltiplos serviços, garantindo consistência técnica e agilidade no desenvolvimento.
+O **EcoTrack** é um projeto de estudo desenvoldido para monitorar e processar métricas de sustentabilidade, com o objetivo de evoluir como desenvolvedor Full Stack e estudar arquiteturas de software. O projeto utiliza uma arquitetura de monorepo orquestrada pelo **Nx** para integrar múltiplos serviços, garantindo consistência técnica e agilidade no desenvolvimento. O foco é construir uma aplicação simples (MVP), porém robusta e bem arquitetada.
+
+---
+
+### 🎯 Objetivo do Projeto
+
+- **Finalidade:** Objeto de estudo para prática de arquitetura Monorepo, Mensageria e estratégias de Renderização.
+- **Deadline:** 🗓️ **08 de Fevereiro de 2026**.
+- **Foco:** Simplicidade e clareza. Poucos CRUDs, foco no fluxo de dados e performance.
+
+### 📚 Stack de Estudo
+
+- **Backend:** NestJS (Express), RabbitMQ (Worker), Redis (Cache), Drizzle + Postgres.
+- **Frontend:** Next.js (SSR/ISR/SSG), Shadcn/UI, Zustand, TanStack Query.
+- **Tooling:** NX, Commitzen, Husky, lint-staged, Vitest, Docker, Nginx.
+
+---
 
 ## 🚀 Tecnologias Core
 
@@ -105,19 +121,54 @@ Isso abrirá uma interface interativa que guiará você na criação de um commi
 
 ## 📝 Roadmap de Implementação
 
-**Fase 1: O Alicerce (MVP)**
+**Fase 1: Infraestrutura e Base**
 
 - [x] Configurar NX Workspace e Apps base.
 - [x] Padronizar comandos e portas de execução.
-- [ ] Setup do Docker Compose (Postgres + Redis).
-- [ ] CRUD inicial com NestJS e Drizzle.
+- [ ] Configurar Docker e Docker Compose (Postgres, Redis, RabbitMQ).
+- [ ] Configurar Drizzle ORM e integração com Postgres.
+- [ ] Instalar Vitest para testes unitários (Nest e Next).
+- [ ] Configurar pipeline de CI/CD.
 
-**Fase 2: Mensageria e Escalabilidade**
+**Fase 2: Arquitetura de Bibliotecas (Libs)**
 
-- [ ] Integração com RabbitMQ para processamento assíncrono.
-- [ ] Implementação de cache com Redis.
+- [ ] Criar `libs/domain` (Drizzle schemas + Zod - compartilhado).
+- [ ] Criar `libs/shared-utils` (Formatadores, tipos comuns).
+- [ ] Criar `libs/ui` (Shadcn + Tailwind - Componentes visuais).
 
-**Fase 3: Qualidade e Monitoramento**
+**Fase 3: Backend e Mensageria**
 
-- [ ] Testes E2E com Playwright.
-- [ ] Monitoramento com Prometheus/Grafana.
+- [ ] Configurar NestJS na `apps/api` (Express + Swagger).
+- [ ] Criar `apps/worker` (Microserviço para processamento de filas RabbitMQ).
+- [ ] Configurar Redis para cache e RabbitMQ para mensageria.
+
+**Fase 4: Frontend e Web Server**
+
+- [ ] Setup completo do Next.js (Shadcn, Tailwind, TanStack Query, Zustand, Hookform, Fontsource).
+- [ ] Configurar Nginx para o Next.js.
+
+**Fase 5: Design e Planejamento do MVP**
+
+- [ ] Planejamento detalhado: Diagramas de arquitetura e rotas do MVP.
+- [ ] Definição de identidade visual e fluxos do Dashboard.
+
+**Fase 6: Desenvolvimento Core (Ingestão e Processamento)**
+
+- [ ] Implementar modelagem de dados e migrações (Drizzle + Postgres).
+- [ ] Criar endpoints de recepção de métricas na `apps/api` (validação com Zod).
+- [ ] Implementar lógica de processamento assíncrono no `apps/worker` via RabbitMQ.
+- [ ] Configurar persistência e cache de resultados no Redis.
+- [ ] Testes de integração e fluxo de dados ponta-a-ponta (API -> Worker -> DB).
+
+**Fase 7: Frontend e Renderização (Foco de Estudo)**
+
+- [ ] Implementar Identidade Visual e Dashboard (Shadcn + Lucide).
+- [ ] **Prática de Renderização:** Criar páginas extras para comparar **SSR**, **ISR** e **SSG**.
+- [ ] Configurar consumo de dados e cache (TanStack Query + Zustand).
+- [ ] Testes de performance e responsividade.
+
+**Fase 8: Finalização e Deploy (Deadline: 08/02)**
+
+- [ ] Ajustes finais de ambiente (Nginx, Docker Compose).
+- [ ] Deploy do MVP e verificação final.
+- [ ] Opcional (se houver tempo): Auth com JWT e Cookie HttpOnly.
