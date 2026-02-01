@@ -81,6 +81,28 @@ O projeto é estruturado dentro da pasta `apps/`:
 
 ---
 
+## 🤝 Como Contribuir (Commits)
+
+Este projeto utiliza o **Commitzen** e o padrão **Conventional Commits** para manter um histórico de commits limpo e padronizado.
+
+### Realizando um Commit
+
+Em vez de usar `git commit`, utilize o comando abaixo na raiz do projeto:
+
+```bash
+npm run commit
+```
+
+Isso abrirá uma interface interativa que guiará você na criação de um commit padronizado:
+
+1. **Tipo:** Selecione o tipo de alteração (ex: `feat`, `fix`, `docs`, `style`, `refactor`, etc).
+2. **Escopo:** Informe o escopo da alteração (ex: `web`, `api`, `auth`, `ui`).
+3. **Assunto:** Uma descrição curta e clara no imperativo.
+4. **Corpo:** Uma descrição mais detalhada da alteração (opcional).
+5. **Rodapé:** Referências a issues ou breaking changes (opcional).
+
+---
+
 ## 📝 Roadmap de Implementação
 
 **Fase 1: O Alicerce (MVP)**

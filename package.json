@@ -10,7 +10,23 @@
     "web:build": "nx build @org/web",
     "web:lint": "nx lint @org/web",
     "dev:all": "nx run-many -t dev",
-    "nx": "nx"
+    "nx": "nx",
+    "commit": "cz",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,mjs}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css}": [
+      "prettier --write"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   },
   "private": true,
   "devDependencies": {
@@ -37,6 +53,8 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "autoprefixer": "10.4.13",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.8.0",
     "eslint-config-next": "^16.0.1",
     "eslint-config-prettier": "^10.0.0",
@@ -45,6 +63,8 @@
     "eslint-plugin-playwright": "^1.6.2",
     "eslint-plugin-react": "7.35.0",
     "eslint-plugin-react-hooks": "5.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "nx": "22.4.2",
     "postcss": "8.4.38",
     "prettier": "^2.6.2",
