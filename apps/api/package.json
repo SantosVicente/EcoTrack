@@ -74,6 +74,12 @@
             "buildTarget": "@org/api:build:production"
           }
         }
+      },
+      "dev": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "nx run @org/api:serve"
+        }
       }
     }
   },

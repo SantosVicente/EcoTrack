@@ -9,6 +9,7 @@
     "web:dev": "nx dev @org/web",
     "web:build": "nx build @org/web",
     "web:lint": "nx lint @org/web",
+    "dev:all": "nx run-many -t dev",
     "nx": "nx"
   },
   "private": true,
