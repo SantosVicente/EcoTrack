@@ -16,7 +16,18 @@
     }
   },
   "nx": {
-    "name": "database"
+    "name": "database",
+    "targets": {
+      "db:generate": {
+        "command": "drizzle-kit generate --config=packages/database/drizzle.config.ts"
+      },
+      "db:push": {
+        "command": "drizzle-kit push --config=packages/database/drizzle.config.ts"
+      },
+      "db:studio": {
+        "command": "drizzle-kit studio --config=packages/database/drizzle.config.ts"
+      }
+    }
   },
   "dependencies": {
     "tslib": "^2.3.0"

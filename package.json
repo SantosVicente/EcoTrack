@@ -15,7 +15,10 @@
     "infra": "docker compose up -d --build",
     "nx": "nx",
     "commit": "cz",
-    "prepare": "husky"
+    "prepare": "husky",
+    "db:generate": "drizzle-kit generate --config=packages/database/drizzle.config.ts",
+    "db:push": "drizzle-kit push --config=packages/database/drizzle.config.ts",
+    "db:studio": "drizzle-kit studio --config=packages/database/drizzle.config.ts"
   },
   "lint-staged": {
     "*.{js,ts,tsx,mjs}": [
