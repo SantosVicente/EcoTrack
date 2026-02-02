@@ -141,6 +141,7 @@ Isso abrirá uma interface interativa que guiará você na criação de um commi
 - [ ] Configurar NestJS na `apps/api` (Express + Swagger).
 - [ ] Criar `apps/worker` (Microserviço para processamento de filas RabbitMQ).
 - [ ] Configurar Redis para cache e RabbitMQ para mensageria.
+- [ ] Subir a api e o worker em containers separados e disponíveis para uso.
 
 **Fase 4: Frontend e Web Server**
 
