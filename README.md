@@ -127,7 +127,8 @@ Isso abrirá uma interface interativa que guiará você na criação de um commi
 - [x] Padronizar comandos e portas de execução.
 - [x] Configurar Docker e Docker Compose (Postgres, Redis, RabbitMQ).
 - [x] Criar `packages/database` (Drizzle schemas + migrations centralizadas).
-- [ ] Instalar Vitest para testes unitários (Nest e Next).
+- [x] Instalar Vitest para testes unitários (Nest e Next).
+- [x] Configurar e2e para Next.js e NestJS.
 - [ ] Configurar pipeline de CI/CD.
 
 **Fase 2: Arquitetura de Bibliotecas (Libs)**

@@ -2,23 +2,22 @@
   "name": "@org/api-e2e",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "nx": {
     "implicitDependencies": [
       "@org/api"
     ],
     "targets": {
-      "e2e": {
-        "executor": "@nx/jest:jest",
+      "test": {
+        "executor": "@nx/vitest:test",
         "outputs": [
-          "{projectRoot}/test-output/jest/coverage"
+          "{projectRoot}/test-output/vitest/coverage"
         ],
         "options": {
-          "jestConfig": "apps/api-e2e/jest.config.cts",
-          "passWithNoTests": true
+          "config": "apps/api-e2e/vitest.config.mts"
         },
         "dependsOn": [
-          "@org/api:build",
-          "@org/api:serve"
+          "@org/api:build"
         ]
       }
     }
