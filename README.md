@@ -121,19 +121,19 @@ Isso abrirá uma interface interativa que guiará você na criação de um commi
 
 ## 📝 Roadmap de Implementação
 
-**Fase 1: Infraestrutura e Base**
+**Fase 1: Infraestrutura e Base de Dados**
 
 - [x] Configurar NX Workspace e Apps base.
 - [x] Padronizar comandos e portas de execução.
-- [ ] Configurar Docker e Docker Compose (Postgres, Redis, RabbitMQ).
-- [ ] Configurar Drizzle ORM e integração com Postgres.
+- [x] Configurar Docker e Docker Compose (Postgres, Redis, RabbitMQ).
+- [x] Criar `packages/database` (Drizzle schemas + migrations centralizadas).
 - [ ] Instalar Vitest para testes unitários (Nest e Next).
 - [ ] Configurar pipeline de CI/CD.
 
 **Fase 2: Arquitetura de Bibliotecas (Libs)**
 
-- [ ] Criar `libs/domain` (Drizzle schemas + Zod - compartilhado).
-- [ ] Criar `libs/shared-utils` (Formatadores, tipos comuns).
+- [ ] Criar `libs/domain` (Tipos e interfaces compartilhadas).
+- [ ] Criar `libs/shared-utils` (Formatadores, utilitários comuns).
 - [ ] Criar `libs/ui` (Shadcn + Tailwind - Componentes visuais).
 
 **Fase 3: Backend e Mensageria**
@@ -154,7 +154,7 @@ Isso abrirá uma interface interativa que guiará você na criação de um commi
 
 **Fase 6: Desenvolvimento Core (Ingestão e Processamento)**
 
-- [ ] Implementar modelagem de dados e migrações (Drizzle + Postgres).
+- [ ] Implementar modelagem de dados (Drizzle no `packages/database`).
 - [ ] Criar endpoints de recepção de métricas na `apps/api` (validação com Zod).
 - [ ] Implementar lógica de processamento assíncrono no `apps/worker` via RabbitMQ.
 - [ ] Configurar persistência e cache de resultados no Redis.
