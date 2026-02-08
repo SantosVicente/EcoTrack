@@ -128,7 +128,13 @@ Isso abrirá uma interface interativa que guiará você na criação de um commi
 - [x] Criar `packages/database` (Drizzle schemas + migrations centralizadas).
 - [x] Instalar Vitest para testes unitários (Nest e Next).
 - [x] Configurar e2e para Next.js e NestJS.
-- [ ] Configurar pipeline de CI/CD.
+- [x] Configurar pipeline de CI/CD (GitHub Actions, Semantic Release).
+
+**Fase 1.5: Planejamento e Documentação**
+
+- [x] Definir fluxo de trabalho (TBD) e versionamento.
+- [ ] Criar diagramas de arquitetura e banco de dados.
+- [ ] Definir Design System e Protótipos (Figma).
 
 **Fase 2: Arquitetura de Bibliotecas (Libs)**
 
@@ -168,7 +174,7 @@ Isso abrirá uma interface interativa que guiará você na criação de um commi
 - [ ] Configurar consumo de dados e cache (TanStack Query + Zustand).
 - [ ] Testes de performance e responsividade.
 
-**Fase 8: Finalização e Deploy (Deadline: 08/02)**
+**Fase 8: Finalização e Deploy**
 
 - [ ] Ajustes finais de ambiente (Nginx, Docker Compose).
 - [ ] Deploy do MVP e verificação final.
