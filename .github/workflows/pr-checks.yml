@@ -53,6 +53,9 @@ jobs:
       - name: Lint All
         run: npx nx run-many -t lint
 
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
       - name: Test & E2E
         run: npx nx run-many -t test e2e
 
