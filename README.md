@@ -7,7 +7,6 @@ O **EcoTrack** é um projeto de estudo desenvoldido para monitorar e processar m
 ### 🎯 Objetivo do Projeto
 
 - **Finalidade:** Objeto de estudo para prática de arquitetura Monorepo, Mensageria e estratégias de Renderização.
-- **Deadline:** 🗓️ **08 de Fevereiro de 2026**.
 - **Foco:** Simplicidade e clareza. Poucos CRUDs, foco no fluxo de dados e performance.
 
 ### 📚 Stack de Estudo
