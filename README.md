@@ -1,6 +1,6 @@
 # EcoTrack - Sustainable Metrics Ecosystem
 
-O **EcoTrack** é um projeto de estudo desenvoldido para monitorar e processar métricas de sustentabilidade, com o objetivo de evoluir como desenvolvedor Full Stack e estudar arquiteturas de software. O projeto utiliza uma arquitetura de monorepo orquestrada pelo **Nx** para integrar múltiplos serviços, garantindo consistência técnica e agilidade no desenvolvimento. O foco é construir uma aplicação simples (MVP), porém robusta e bem arquitetada.
+O **EcoTrack** é um projeto de estudo desenvolvido para monitorar e processar métricas de sustentabilidade, com o objetivo de evoluir como desenvolvedor Full Stack e estudar arquiteturas de software. O objetivo é integrar múltiplos serviços, garantindo consistência técnica e agilidade no desenvolvimento. O foco é construir uma aplicação simples, escalável e funcional.
 
 ---
 
@@ -23,7 +23,7 @@ O **EcoTrack** é um projeto de estudo desenvoldido para monitorar e processar m
 
 - **NX:** Orquestração de monorepo e build system inteligente.
 - **Commitzen & Husky:** Padronização de commits e git hooks para qualidade de código.
-- **Vitest:** Testes unitários de alta performance.
+- **Vitest & Playwright:** Testes de alta performance.
 
 ### Frontend (Next.js App)
 
@@ -118,6 +118,42 @@ Isso abrirá uma interface interativa que guiará você na criação de um commi
 
 ---
 
+## Requisitos Funcionais (RFs)
+
+1. Ingestão e Processamento de Métrica:
+   RF-01: O sistema deve permitir a ingestão de métricas de sustentabilidade (Energia, Água, Resíduos, Carbono) via API.
+   RF-02: O sistema deve validar os dados recebidos utilizando esquemas definidos (Zod).
+   RF-03: O sistema deve enfileirar as métricas recebidas para processamento assíncrono (RabbitMQ).
+   RF-04: O sistema deve processar as métricas brutas para calcular valores derivados (por exemplo, pegada de carbono com base no consumo de energia em kWh).
+   RF-05: O sistema deve persistir os dados brutos e processados ​​no banco de dados.
+
+2. Painel de Controle e Visualização
+   RF-06: O sistema deve exibir um painel de controle em tempo real com indicadores-chave de desempenho de sustentabilidade.
+   RF-07: O sistema deve permitir que os usuários filtrem as métricas por intervalo de datas, tipo e local/fonte.
+   RF-08: O sistema deve fornecer gráficos visuais (linha, barra, pizza) para tendências das métricas ao longo do tempo.
+   RF-09: O sistema deve exibir uma seção de "Alertas Críticos" para métricas que excedam os limites definidos.
+
+## Non-Functional Requirements (NFRs)
+
+1. Desempenho e Escalabilidade
+   NFR-01: O painel deve carregar as métricas críticas rapidamente.
+   NFR-02: O sistema deve garantir que não haja perda de dados durante falhas de processamento usando padrões de confirmação de mensagens (Ack/Nack).
+   NFR-03: O sistema deve implementar mecanismos de repetição para tarefas com falha.
+
+2. Arquitetura e Padrões
+   NFR-04: O código deve seguir padrões arquitetônicos específicos: Monorepo (Nx).
+   NFR-05: Todo o código deve ser estritamente tipado (TypeScript).
+   NFR-06: A interface do usuário deve seguir o Sistema de Design definido usando Shadcn/UI e Tailwind CSS.
+
+## Entidades de Domínio (Core)
+
+1. Métrica: Representa um ponto de dados (ex.: 50 kWh).
+2. Atributos: id, tipo (ENERGIA, ÁGUA, CARBONO), valor, unidade, carimbo de data/hora, id_origem.
+3. Alerta: Gerado quando uma métrica excede um limite.
+4. Origem: A origem da métrica (ex.: "Edifício A - Sala de Servidores").
+
+---
+
 ## 📝 Roadmap de Implementação
 
 **Fase 1: Infraestrutura e Base de Dados**
@@ -133,8 +169,8 @@ Isso abrirá uma interface interativa que guiará você na criação de um commi
 **Fase 1.5: Planejamento e Documentação**
 
 - [x] Definir fluxo de trabalho (TBD) e versionamento.
-- [ ] Criar diagramas de arquitetura e banco de dados.
-- [ ] Definir Design System e Protótipos (Figma).
+- [x] Criar diagramas de arquitetura e banco de dados.
+- [x] Definir Design System e Protótipos (Figma).
 
 **Fase 2: Arquitetura de Bibliotecas (Libs)**
 
