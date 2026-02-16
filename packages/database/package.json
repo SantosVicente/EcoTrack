@@ -26,6 +26,9 @@
       },
       "db:studio": {
         "command": "drizzle-kit studio --config=packages/database/drizzle.config.ts"
+      },
+      "db:seed": {
+        "command": "npx tsx --env-file=.env packages/database/src/lib/seed.ts"
       }
     }
   },

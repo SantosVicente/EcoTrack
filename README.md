@@ -159,59 +159,53 @@ Isso abrirá uma interface interativa que guiará você na criação de um commi
 **Fase 1: Infraestrutura e Base de Dados**
 
 - [x] Configurar NX Workspace e Apps base.
-- [x] Padronizar comandos e portas de execução.
+- [x] Padronizar comandos e portas de execução (Node.js v22).
 - [x] Configurar Docker e Docker Compose (Postgres, Redis, RabbitMQ).
 - [x] Criar `packages/database` (Drizzle schemas + migrations centralizadas).
-- [x] Instalar Vitest para testes unitários (Nest e Next).
-- [x] Configurar e2e para Next.js e NestJS.
+- [x] Realizar Seed inicial do banco (John Doe).
 - [x] Configurar pipeline de CI/CD (GitHub Actions, Semantic Release).
 
-**Fase 1.5: Planejamento e Documentação**
+**Fase 2: Arquitetura de Bibliotecas (Libs/Packages)**
 
-- [x] Definir fluxo de trabalho (TBD) e versionamento.
-- [x] Criar diagramas de arquitetura e banco de dados.
-- [x] Definir Design System e Protótipos (Figma).
+- [ ] Criar `packages/domain` (Tipos e interfaces compartilhadas - Essencial para Auth e Ingestão).
+- [ ] Criar `packages/shared-utils` (Formatadores, utilitários comuns).
+- [ ] Criar `packages/ui` (Shadcn + Tailwind - Componentes visuais).
 
-**Fase 2: Arquitetura de Bibliotecas (Libs)**
+**Fase 3: Backend - API Heart & Auth (Detailed Plan)**
 
-- [ ] Criar `libs/domain` (Tipos e interfaces compartilhadas).
-- [ ] Criar `libs/shared-utils` (Formatadores, utilitários comuns).
-- [ ] Criar `libs/ui` (Shadcn + Tailwind - Componentes visuais).
+- [ ] **Setup de Infra NestJS:**
+  - [ ] `ConfigModule` Global (Validação com Zod/Joi).
+  - [ ] `DatabaseModule` (Integração com `packages/database`).
+  - [ ] Filtros e Interceptors Globais.
+  - [ ] Documentação Swagger Inicial.
+- [ ] **Autenticação Segura (JWT via Cookie HttpOnly):**
+  - [ ] Estratégias Passport (JwtStrategy, LocalStrategy, JwtRefreshStrategy).
+  - [ ] `AuthService`: Login, Logout, Refresh e Validação.
+  - [ ] `AuthController`: Gerenciamento de Cookies (httpOnly, secure, sameSite).
+- [ ] **Módulos de Domínio (CRUDs):**
+  - [ ] `UsersModule`: Perfil `/me` e Hash de senha.
+  - [ ] `SourcesModule`: Gerenciamento de fontes de dados vinculadas ao usuário.
+  - [ ] `ThresholdsModule`: Regras de alerta por fonte.
 
-**Fase 3: Backend e Mensageria**
+**Fase 4: Ingestão de Métricas & Worker**
 
-- [ ] Configurar NestJS na `apps/api` (Express + Swagger).
-- [ ] Criar `apps/worker` (Microserviço para processamento de filas RabbitMQ).
-- [ ] Configurar Redis para cache e RabbitMQ para mensageria.
-- [ ] Subir a api e o worker em containers separados e disponíveis para uso.
+- [ ] **Ingestion Module (API):**
+  - [ ] Endpoint `POST /metrics` (Salvar PENDING e publicar no RabbitMQ).
+  - [ ] Configuração de Producer RabbitMQ.
+- [ ] **Worker Service (`apps/worker`):**
+  - [ ] Criar Microserviço NestJS (Consumer RabbitMQ).
+  - [ ] Lógica de Cálculo e Atualização no Banco.
+- [ ] **Performance:**
+  - [ ] Estratégia de Cache com Redis no Worker e API.
 
-**Fase 4: Frontend e Web Server**
+**Fase 5: Frontend Dashboard & Vitrine**
 
-- [ ] Setup completo do Next.js (Shadcn, Tailwind, TanStack Query, Zustand, Hookform, Fontsource).
-- [ ] Configurar Nginx para o Next.js.
+- [ ] Setup Next.js (Shadcn, Tailwind, TanStack Query).
+- [ ] Autenticação: Integração com Cookies HttpOnly.
+- [ ] Dashboard: Gráficos e Polling para status em tempo real.
 
-**Fase 5: Design e Planejamento do MVP**
+**Fase 6: Finalização & Deploy**
 
-- [ ] Planejamento detalhado: Diagramas de arquitetura e rotas do MVP.
-- [ ] Definição de identidade visual e fluxos do Dashboard.
-
-**Fase 6: Desenvolvimento Core (Ingestão e Processamento)**
-
-- [ ] Implementar modelagem de dados (Drizzle no `packages/database`).
-- [ ] Criar endpoints de recepção de métricas na `apps/api` (validação com Zod).
-- [ ] Implementar lógica de processamento assíncrono no `apps/worker` via RabbitMQ.
-- [ ] Configurar persistência e cache de resultados no Redis.
-- [ ] Testes de integração e fluxo de dados ponta-a-ponta (API -> Worker -> DB).
-
-**Fase 7: Frontend e Renderização (Foco de Estudo)**
-
-- [ ] Implementar Identidade Visual e Dashboard (Shadcn + Lucide).
-- [ ] **Prática de Renderização:** Criar páginas extras para comparar **SSR**, **ISR** e **SSG**.
-- [ ] Configurar consumo de dados e cache (TanStack Query + Zustand).
-- [ ] Testes de performance e responsividade.
-
-**Fase 8: Finalização e Deploy**
-
-- [ ] Ajustes finais de ambiente (Nginx, Docker Compose).
-- [ ] Deploy do MVP e verificação final.
-- [ ] Opcional (se houver tempo): Auth com JWT e Cookie HttpOnly.
+- [ ] Testes E2E (Auth Flow).
+- [ ] Ajustes de Nginx e Docker Cloud.
+- [ ] Deploy Final.
