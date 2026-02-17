@@ -1,3 +1,9 @@
+## [1.2.1](https://github.com/SantosVicente/EcoTrack/compare/v1.2.0...v1.2.1) (2026-02-17)
+
+### Bug Fixes
+
+- **ci:** fixing ci workflow errors ([#7](https://github.com/SantosVicente/EcoTrack/issues/7)) ([5510688](https://github.com/SantosVicente/EcoTrack/commit/5510688c0a03e658c18daa5404b1d5e913ec657c))
+
 # [1.2.0](https://github.com/SantosVicente/EcoTrack/compare/v1.1.0...v1.2.0) (2026-02-17)
 
 ### Features
