@@ -1,3 +1,9 @@
+# [1.1.0](https://github.com/SantosVicente/EcoTrack/compare/v1.0.0...v1.1.0) (2026-02-17)
+
+### Features
+
+- add system design, docs and auth logic ([#3](https://github.com/SantosVicente/EcoTrack/issues/3)) ([be9fc8e](https://github.com/SantosVicente/EcoTrack/commit/be9fc8ec8cfa4d155e21cde84a96b5067a64d2c1))
+
 # 1.0.0 (2026-02-08)
 
 ### Bug Fixes
