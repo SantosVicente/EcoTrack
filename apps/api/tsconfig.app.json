@@ -7,7 +7,9 @@
     "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "target": "es2021"
+    "target": "es2021",
+    "module": "esnext",
+    "moduleResolution": "bundler"
   },
   "include": ["src/**/*.ts"],
   "exclude": [
@@ -28,6 +30,9 @@
     "src/**/*.spec.jsx"
   ],
   "references": [
+    {
+      "path": "../../packages/database/tsconfig.lib.json"
+    },
     {
       "path": "../../packages/domain/tsconfig.lib.json"
     }
