@@ -3,7 +3,7 @@ import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import * as schema from '@org/database';
 
-export const DRIZZLE = 'DRIZZLE';
+import { DRIZZLE } from './constants';
 
 @Global()
 @Module({

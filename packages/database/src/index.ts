@@ -3,10 +3,16 @@ import { eq } from 'drizzle-orm';
 import postgres from 'postgres';
 import * as schema from './lib/schema.js';
 
-const connectionString = process.env.DATABASE_URL || '';
+let _db: DrizzleDB | null = null;
 
-const client = postgres(connectionString);
-export const db = drizzle(client, { schema });
+export const getDb = () => {
+  if (!_db) {
+    const connectionString = process.env.DATABASE_URL || '';
+    const client = postgres(connectionString);
+    _db = drizzle(client, { schema });
+  }
+  return _db;
+};
 
 export * from './lib/schema.js';
 export { eq };
