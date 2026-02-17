@@ -1,4 +1,4 @@
-import { db } from '../index.js';
+import { getDb } from '../index.js';
 import * as schema from './schema.js';
 
 async function seed() {
@@ -8,6 +8,8 @@ async function seed() {
   // Password hash para 'password123'
   const passwordHash =
     '$2y$10$iX2N/S7U8uL6G.z7I3KqLe.I4J3K2L1M0N9O8P7Q6R5S4T3U2V1W';
+
+  const db = getDb();
 
   const [user] = await db
     .insert(schema.users)

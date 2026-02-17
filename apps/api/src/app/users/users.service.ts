@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { DRIZZLE } from '../database/database.module';
+import { DRIZZLE } from '../database/constants';
 import * as database from '@org/database';
 import { CreateUserDto, User, UserProfile } from '@org/domain';
 

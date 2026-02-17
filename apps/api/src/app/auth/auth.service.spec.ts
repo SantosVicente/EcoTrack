@@ -1,7 +1,16 @@
-import { Test, TestingModule } from '@nestjs/testing';
+vi.mock('bcrypt', () => ({
+  hash: vi.fn(),
+  compare: vi.fn(),
+  genSalt: vi.fn(),
+}));
+vi.mock('@org/domain', () => ({
+  UserProfile: class {},
+  RegisterDTO: class {},
+  MeDTO: class {},
+}));
 import { AuthService } from './auth.service.js';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../users/users.service.js';
+import type { UsersService } from '../users/users.service';
 import { UnauthorizedException } from '@nestjs/common';
 import { UserProfile } from '@org/domain';
 
@@ -19,33 +28,22 @@ describe('AuthService', () => {
     updatedAt: new Date().toISOString(),
   };
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        AuthService,
-        {
-          provide: JwtService,
-          useValue: {
-            sign: vi.fn(() => 'mock_token'),
-            verify: vi.fn(() => ({
-              sub: 'user-id',
-              email: 'test@example.com',
-            })),
-          },
-        },
-        {
-          provide: UsersService,
-          useValue: {
-            findByEmail: vi.fn(),
-            create: vi.fn(),
-          },
-        },
-      ],
-    }).compile();
+  beforeEach(() => {
+    jwtService = {
+      sign: vi.fn(() => 'mock_token'),
+      verify: vi.fn(() => ({
+        sub: 'user-id',
+        email: 'test@example.com',
+      })),
+    } as unknown as JwtService;
 
-    service = module.get<AuthService>(AuthService);
-    jwtService = module.get<JwtService>(JwtService);
-    usersService = module.get<UsersService>(UsersService);
+    usersService = {
+      findByEmail: vi.fn(),
+      create: vi.fn(),
+      updateRefreshToken: vi.fn(),
+    } as unknown as UsersService;
+
+    service = new AuthService(jwtService, usersService);
   });
 
   it('should be defined', () => {
