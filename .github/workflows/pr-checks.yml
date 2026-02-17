@@ -44,7 +44,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
 
       - name: Install Dependencies
@@ -53,8 +53,8 @@ jobs:
       - name: Lint All
         run: npx nx run-many -t lint
 
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+      - name: Install Playwright Browsers & Deps
+        run: npx playwright install chromium --with-deps
 
       - name: Test & E2E
         run: npx nx run-many -t test e2e

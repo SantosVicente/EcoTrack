@@ -12,9 +12,5 @@
     "src/**/*.ts",
     "src/**/*.d.ts"
   ],
-  "references": [
-    {
-      "path": "../api"
-    }
-  ]
+  "references": []
 }

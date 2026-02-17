@@ -1,6 +1,6 @@
 # EcoTrack - Sustainable Metrics Ecosystem
 
-O **EcoTrack** é um projeto de estudo desenvoldido para monitorar e processar métricas de sustentabilidade, com o objetivo de evoluir como desenvolvedor Full Stack e estudar arquiteturas de software. O projeto utiliza uma arquitetura de monorepo orquestrada pelo **Nx** para integrar múltiplos serviços, garantindo consistência técnica e agilidade no desenvolvimento. O foco é construir uma aplicação simples (MVP), porém robusta e bem arquitetada.
+O **EcoTrack** é um projeto de estudo desenvolvido para monitorar e processar métricas de sustentabilidade, com o objetivo de evoluir como desenvolvedor Full Stack e estudar arquiteturas de software. O objetivo é integrar múltiplos serviços, garantindo consistência técnica e agilidade no desenvolvimento. O foco é construir uma aplicação simples, escalável e funcional.
 
 ---
 
@@ -23,7 +23,7 @@ O **EcoTrack** é um projeto de estudo desenvoldido para monitorar e processar m
 
 - **NX:** Orquestração de monorepo e build system inteligente.
 - **Commitzen & Husky:** Padronização de commits e git hooks para qualidade de código.
-- **Vitest:** Testes unitários de alta performance.
+- **Vitest & Playwright:** Testes de alta performance.
 
 ### Frontend (Next.js App)
 
@@ -118,58 +118,94 @@ Isso abrirá uma interface interativa que guiará você na criação de um commi
 
 ---
 
+## Requisitos Funcionais (RFs)
+
+1. Ingestão e Processamento de Métrica:
+   RF-01: O sistema deve permitir a ingestão de métricas de sustentabilidade (Energia, Água, Resíduos, Carbono) via API.
+   RF-02: O sistema deve validar os dados recebidos utilizando esquemas definidos (Zod).
+   RF-03: O sistema deve enfileirar as métricas recebidas para processamento assíncrono (RabbitMQ).
+   RF-04: O sistema deve processar as métricas brutas para calcular valores derivados (por exemplo, pegada de carbono com base no consumo de energia em kWh).
+   RF-05: O sistema deve persistir os dados brutos e processados ​​no banco de dados.
+
+2. Painel de Controle e Visualização
+   RF-06: O sistema deve exibir um painel de controle em tempo real com indicadores-chave de desempenho de sustentabilidade.
+   RF-07: O sistema deve permitir que os usuários filtrem as métricas por intervalo de datas, tipo e local/fonte.
+   RF-08: O sistema deve fornecer gráficos visuais (linha, barra, pizza) para tendências das métricas ao longo do tempo.
+   RF-09: O sistema deve exibir uma seção de "Alertas Críticos" para métricas que excedam os limites definidos.
+
+## Non-Functional Requirements (NFRs)
+
+1. Desempenho e Escalabilidade
+   NFR-01: O painel deve carregar as métricas críticas rapidamente.
+   NFR-02: O sistema deve garantir que não haja perda de dados durante falhas de processamento usando padrões de confirmação de mensagens (Ack/Nack).
+   NFR-03: O sistema deve implementar mecanismos de repetição para tarefas com falha.
+
+2. Arquitetura e Padrões
+   NFR-04: O código deve seguir padrões arquitetônicos específicos: Monorepo (Nx).
+   NFR-05: Todo o código deve ser estritamente tipado (TypeScript).
+   NFR-06: A interface do usuário deve seguir o Sistema de Design definido usando Shadcn/UI e Tailwind CSS.
+
+## Entidades de Domínio (Core)
+
+1. Métrica: Representa um ponto de dados (ex.: 50 kWh).
+2. Atributos: id, tipo (ENERGIA, ÁGUA, CARBONO), valor, unidade, carimbo de data/hora, id_origem.
+3. Alerta: Gerado quando uma métrica excede um limite.
+4. Origem: A origem da métrica (ex.: "Edifício A - Sala de Servidores").
+
+---
+
 ## 📝 Roadmap de Implementação
 
 **Fase 1: Infraestrutura e Base de Dados**
 
 - [x] Configurar NX Workspace e Apps base.
-- [x] Padronizar comandos e portas de execução.
+- [x] Padronizar comandos e portas de execução (Node.js v22).
 - [x] Configurar Docker e Docker Compose (Postgres, Redis, RabbitMQ).
 - [x] Criar `packages/database` (Drizzle schemas + migrations centralizadas).
-- [x] Instalar Vitest para testes unitários (Nest e Next).
-- [x] Configurar e2e para Next.js e NestJS.
-- [ ] Configurar pipeline de CI/CD.
+- [x] Realizar Seed inicial do banco (John Doe).
+- [x] Configurar pipeline de CI/CD (GitHub Actions, Semantic Release).
 
-**Fase 2: Arquitetura de Bibliotecas (Libs)**
+**Fase 2: Arquitetura de Bibliotecas (Libs/Packages)**
 
-- [ ] Criar `libs/domain` (Tipos e interfaces compartilhadas).
-- [ ] Criar `libs/shared-utils` (Formatadores, utilitários comuns).
-- [ ] Criar `libs/ui` (Shadcn + Tailwind - Componentes visuais).
+- [x] Criar `packages/domain` (Tipos e interfaces compartilhadas - Essencial para Auth e Ingestão).
+- [x] Criar `packages/shared-utils` (Formatadores, utilitários comuns).
+- [x] Criar `packages/ui` (Shadcn + Tailwind - Componentes visuais).
 
-**Fase 3: Backend e Mensageria**
+**Fase 3: Backend - API Heart & Auth (Detailed Plan)**
 
-- [ ] Configurar NestJS na `apps/api` (Express + Swagger).
-- [ ] Criar `apps/worker` (Microserviço para processamento de filas RabbitMQ).
-- [ ] Configurar Redis para cache e RabbitMQ para mensageria.
-- [ ] Subir a api e o worker em containers separados e disponíveis para uso.
+- [ ] **Setup de Infra NestJS:**
+  - [ ] `ConfigModule` Global (Validação com Zod/Joi).
+  - [ ] `DatabaseModule` (Integração com `packages/database`).
+  - [ ] Filtros e Interceptors Globais.
+  - [ ] Documentação Swagger Inicial.
+- [ ] **Autenticação Segura (JWT via Cookie HttpOnly):**
+  - [ ] Estratégias Passport (JwtStrategy, LocalStrategy, JwtRefreshStrategy).
+  - [ ] `AuthService`: Login, Logout, Refresh e Validação.
+  - [ ] `AuthController`: Gerenciamento de Cookies (httpOnly, secure, sameSite).
+- [ ] **Módulos de Domínio (CRUDs):**
+  - [ ] `UsersModule`: Perfil `/me` e Hash de senha.
+  - [ ] `SourcesModule`: Gerenciamento de fontes de dados vinculadas ao usuário.
+  - [ ] `ThresholdsModule`: Regras de alerta por fonte.
 
-**Fase 4: Frontend e Web Server**
+**Fase 4: Ingestão de Métricas & Worker**
 
-- [ ] Setup completo do Next.js (Shadcn, Tailwind, TanStack Query, Zustand, Hookform, Fontsource).
-- [ ] Configurar Nginx para o Next.js.
+- [ ] **Ingestion Module (API):**
+  - [ ] Endpoint `POST /metrics` (Salvar PENDING e publicar no RabbitMQ).
+  - [ ] Configuração de Producer RabbitMQ.
+- [ ] **Worker Service (`apps/worker`):**
+  - [ ] Criar Microserviço NestJS (Consumer RabbitMQ).
+  - [ ] Lógica de Cálculo e Atualização no Banco.
+- [ ] **Performance:**
+  - [ ] Estratégia de Cache com Redis no Worker e API.
 
-**Fase 5: Design e Planejamento do MVP**
+**Fase 5: Frontend Dashboard & Vitrine**
 
-- [ ] Planejamento detalhado: Diagramas de arquitetura e rotas do MVP.
-- [ ] Definição de identidade visual e fluxos do Dashboard.
+- [ ] Setup Next.js (Shadcn, Tailwind, TanStack Query).
+- [ ] Autenticação: Integração com Cookies HttpOnly.
+- [ ] Dashboard: Gráficos e Polling para status em tempo real.
 
-**Fase 6: Desenvolvimento Core (Ingestão e Processamento)**
+**Fase 6: Finalização & Deploy**
 
-- [ ] Implementar modelagem de dados (Drizzle no `packages/database`).
-- [ ] Criar endpoints de recepção de métricas na `apps/api` (validação com Zod).
-- [ ] Implementar lógica de processamento assíncrono no `apps/worker` via RabbitMQ.
-- [ ] Configurar persistência e cache de resultados no Redis.
-- [ ] Testes de integração e fluxo de dados ponta-a-ponta (API -> Worker -> DB).
-
-**Fase 7: Frontend e Renderização (Foco de Estudo)**
-
-- [ ] Implementar Identidade Visual e Dashboard (Shadcn + Lucide).
-- [ ] **Prática de Renderização:** Criar páginas extras para comparar **SSR**, **ISR** e **SSG**.
-- [ ] Configurar consumo de dados e cache (TanStack Query + Zustand).
-- [ ] Testes de performance e responsividade.
-
-**Fase 8: Finalização e Deploy (Deadline: 08/02)**
-
-- [ ] Ajustes finais de ambiente (Nginx, Docker Compose).
-- [ ] Deploy do MVP e verificação final.
-- [ ] Opcional (se houver tempo): Auth com JWT e Cookie HttpOnly.
+- [ ] Testes E2E (Auth Flow).
+- [ ] Ajustes de Nginx e Docker Cloud.
+- [ ] Deploy Final.

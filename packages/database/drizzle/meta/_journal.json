@@ -8,6 +8,27 @@
       "when": 1770045863096,
       "tag": "0000_first_xavin",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1771274966305,
+      "tag": "0001_early_loners",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1771343335489,
+      "tag": "0002_massive_hitman",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1771343536605,
+      "tag": "0003_complete_deathstrike",
+      "breakpoints": true
     }
   ]
 }

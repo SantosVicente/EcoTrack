@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitest/config';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import swc from 'unplugin-swc';
+import path from 'path';
 
 export default defineConfig(() => ({
   root: __dirname,
@@ -20,6 +21,17 @@ export default defineConfig(() => ({
       },
     }),
   ],
+  resolve: {
+    alias: {
+      '@org/api': path.resolve(__dirname, '../../apps/api/src'),
+      '@org/domain': path.resolve(__dirname, '../../packages/domain/src'),
+      '@org/shared-utils': path.resolve(
+        __dirname,
+        '../../packages/shared-utils/src'
+      ),
+      '@org/ui': path.resolve(__dirname, '../../packages/ui/src'),
+    },
+  },
   test: {
     name: '@org/api-e2e',
     watch: false,
