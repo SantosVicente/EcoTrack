@@ -167,9 +167,9 @@ Isso abrirá uma interface interativa que guiará você na criação de um commi
 
 **Fase 2: Arquitetura de Bibliotecas (Libs/Packages)**
 
-- [ ] Criar `packages/domain` (Tipos e interfaces compartilhadas - Essencial para Auth e Ingestão).
-- [ ] Criar `packages/shared-utils` (Formatadores, utilitários comuns).
-- [ ] Criar `packages/ui` (Shadcn + Tailwind - Componentes visuais).
+- [x] Criar `packages/domain` (Tipos e interfaces compartilhadas - Essencial para Auth e Ingestão).
+- [x] Criar `packages/shared-utils` (Formatadores, utilitários comuns).
+- [x] Criar `packages/ui` (Shadcn + Tailwind - Componentes visuais).
 
 **Fase 3: Backend - API Heart & Auth (Detailed Plan)**
 

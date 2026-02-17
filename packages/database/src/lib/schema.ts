@@ -40,10 +40,14 @@ export const severityEnum = pgEnum('severity', [
 // 1. Users (Autenticação)
 export const users = pgTable('users', {
   id: uuid('id').primaryKey().defaultRandom(),
-  name: varchar('name', { length: 255 }).notNull(),
+  firstName: varchar('first_name', { length: 255 }).notNull(),
+  lastName: varchar('last_name', { length: 255 }).notNull(),
+  avatarUrl: varchar('avatar_url', { length: 255 }),
   email: varchar('email', { length: 255 }).notNull().unique(),
   passwordHash: text('password_hash').notNull(),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
+  refreshTokenHash: text('refresh_token_hash'),
+  createdAt: timestamp('created_at', { mode: 'string' }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { mode: 'string' }).defaultNow().notNull(),
 });
 
 // 2. Sources (Origens das métricas: Prédios, Sensores)
@@ -56,7 +60,8 @@ export const sources = pgTable('sources', {
   type: sourceTypeEnum('type').notNull(),
   location: varchar('location', { length: 255 }),
   metadata: jsonb('metadata'), // Para guardar fatores de conversão específicos
-  createdAt: timestamp('created_at').defaultNow().notNull(),
+  createdAt: timestamp('created_at', { mode: 'string' }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { mode: 'string' }).defaultNow().notNull(),
 });
 
 // 3. Metrics (O coração do sistema)
@@ -73,7 +78,9 @@ export const metrics = pgTable('metrics', {
   calculatedValue: doublePrecision('calculated_value'),
   unit: varchar('unit', { length: 20 }).notNull(),
   status: metricStatusEnum('status').default('PENDING').notNull(),
-  timestamp: timestamp('timestamp').defaultNow().notNull(),
+  timestamp: timestamp('timestamp', { mode: 'string' }).defaultNow().notNull(),
+  createdAt: timestamp('created_at', { mode: 'string' }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { mode: 'string' }).defaultNow().notNull(),
 });
 
 // 4. Thresholds (Regras para emitir alertas)
@@ -87,7 +94,8 @@ export const thresholds = pgTable('thresholds', {
     .notNull(), // FK
   metricType: metricTypeEnum('metric_type').notNull(),
   maxValue: doublePrecision('max_value').notNull(),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
+  createdAt: timestamp('created_at', { mode: 'string' }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { mode: 'string' }).defaultNow().notNull(),
 });
 
 // 5. Alerts (Gerados pelo Worker)
@@ -98,8 +106,9 @@ export const alerts = pgTable('alerts', {
     .notNull(), // FK
   severity: severityEnum('severity').notNull(),
   message: text('message').notNull(),
-  readAt: timestamp('read_at'), // Se null, não foi lido
-  createdAt: timestamp('created_at').defaultNow().notNull(),
+  readAt: timestamp('read_at', { mode: 'string' }), // Se null, não foi lido
+  createdAt: timestamp('created_at', { mode: 'string' }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { mode: 'string' }).defaultNow().notNull(),
 });
 
 // RELATIONS

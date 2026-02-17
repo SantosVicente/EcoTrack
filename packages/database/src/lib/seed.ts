@@ -12,7 +12,11 @@ async function seed() {
   const [user] = await db
     .insert(schema.users)
     .values({
-      name: 'John Doe',
+      firstName: 'Jhon',
+      lastName: 'Doe',
+      avatarUrl: 'https://github.com/shadcn.png',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
       email: 'john.doe@example.com',
       passwordHash: passwordHash,
     })
@@ -42,6 +46,8 @@ async function seed() {
       type: 'SENSOR',
       location: 'Andar 1 - Ala Sul',
       metadata: { floor: 1, department: 'TI' },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     })
     .onConflictDoNothing()
     .returning();
@@ -57,6 +63,8 @@ async function seed() {
       type: 'API',
       location: 'Cloud',
       metadata: { provider: 'OpenWeather' },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     })
     .onConflictDoNothing()
     .returning();
