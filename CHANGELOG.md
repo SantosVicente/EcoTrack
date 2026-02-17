@@ -1,3 +1,9 @@
+# [1.2.0](https://github.com/SantosVicente/EcoTrack/compare/v1.1.0...v1.2.0) (2026-02-17)
+
+### Features
+
+- create signup routes ([#6](https://github.com/SantosVicente/EcoTrack/issues/6)) ([29d1714](https://github.com/SantosVicente/EcoTrack/commit/29d17149dd292ba94c2e31ac44b73b5eba9f1e4a))
+
 # [1.1.0](https://github.com/SantosVicente/EcoTrack/compare/v1.0.0...v1.1.0) (2026-02-17)
 
 ### Features
