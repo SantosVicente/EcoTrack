@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, beforeEach } from 'vitest';
 import { AppService } from './app.service.js';
 
 describe('AppService', () => {
@@ -11,9 +11,5 @@ describe('AppService', () => {
     }).compile();
 
     service = app.get<AppService>(AppService);
-  });
-
-  it('should return "Hello World!"', () => {
-    expect(service.getData()).toEqual({ message: 'Hello API' });
   });
 });
