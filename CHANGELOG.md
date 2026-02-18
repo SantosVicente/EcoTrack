@@ -1,3 +1,9 @@
+# [1.3.0](https://github.com/SantosVicente/EcoTrack/compare/v1.2.1...v1.3.0) (2026-02-18)
+
+### Features
+
+- implement finally auth user routes ([#8](https://github.com/SantosVicente/EcoTrack/issues/8)) ([bcd9aa6](https://github.com/SantosVicente/EcoTrack/commit/bcd9aa6c1c478c0bb66c903c4b9d79659745f814))
+
 ## [1.2.1](https://github.com/SantosVicente/EcoTrack/compare/v1.2.0...v1.2.1) (2026-02-17)
 
 ### Bug Fixes
