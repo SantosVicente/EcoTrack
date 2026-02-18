@@ -129,4 +129,54 @@ describe('AuthService', () => {
       ).rejects.toThrow(UnauthorizedException);
     });
   });
+
+  describe('forgotPassword', () => {
+    it('should generate token and return message', async () => {
+      vi.spyOn(usersService, 'findByEmail').mockResolvedValue(mockUser as any);
+      (usersService as any).setResetToken = vi.fn();
+
+      const result = await service.forgotPassword('test@example.com');
+
+      expect(usersService.findByEmail).toHaveBeenCalledWith('test@example.com');
+      expect((usersService as any).setResetToken).toHaveBeenCalled();
+      expect(result).toHaveProperty('token');
+      expect(result).toHaveProperty('message');
+    });
+
+    it('should throw if user not found', async () => {
+      vi.spyOn(usersService, 'findByEmail').mockResolvedValue(null);
+      await expect(
+        service.forgotPassword('unknown@example.com')
+      ).rejects.toThrow(UnauthorizedException);
+    });
+  });
+
+  describe('resetPassword', () => {
+    it('should reset password', async () => {
+      (usersService as any).findByResetToken = vi
+        .fn()
+        .mockResolvedValue(mockUser);
+      (usersService as any).updatePassword = vi.fn();
+      (usersService as any).cleanResetToken = vi.fn();
+      vi.spyOn(service, 'hashPassword').mockResolvedValue('newHash');
+
+      const result = await service.resetPassword('valid_token', 'newPass');
+
+      expect((usersService as any).updatePassword).toHaveBeenCalledWith(
+        mockUser.id,
+        'newHash'
+      );
+      expect((usersService as any).cleanResetToken).toHaveBeenCalledWith(
+        mockUser.id
+      );
+      expect(result).toEqual({ success: true });
+    });
+
+    it('should throw if token invalid', async () => {
+      (usersService as any).findByResetToken = vi.fn().mockResolvedValue(null);
+      await expect(service.resetPassword('invalid', 'pass')).rejects.toThrow(
+        UnauthorizedException
+      );
+    });
+  });
 });

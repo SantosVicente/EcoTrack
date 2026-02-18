@@ -104,8 +104,28 @@ export class AuthController {
   @Post('register')
   @ApiOperation({ summary: 'Registra um novo usuário' })
   @ApiBody({ type: RegisterDTO })
-  async register(@Body() body: RegisterDTO) {
-    return this.authService.register(body);
+  async register(
+    @Body() body: RegisterDTO,
+    @Res({ passthrough: true }) res: Response
+  ) {
+    const { access_token, refresh_token, user } =
+      await this.authService.register(body);
+
+    res.cookie('access_token', access_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 3600 * 1000,
+    });
+
+    res.cookie('refresh_token', refresh_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 3600 * 1000,
+    });
+
+    return { user, access_token };
   }
 
   @Post('forgot-password')

@@ -5,9 +5,8 @@ async function seed() {
   console.log('🌱 Seeding database...');
 
   // 1. Criar Usuário Base (John Doe)
-  // Password hash para 'password123'
   const passwordHash =
-    '$2y$10$iX2N/S7U8uL6G.z7I3KqLe.I4J3K2L1M0N9O8P7Q6R5S4T3U2V1W';
+    '$2b$10$ep2.Z7e0.Z7e0.Z7e0.Z7e0.Z7e0.Z7e0.Z7e0.Z7e0.Z7e0.Z7e0';
 
   const db = getDb();
 
