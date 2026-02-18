@@ -1,9 +1,10 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { MeDTO, RegisterDTO, UserProfile } from '@org/domain';
+import { RegisterDTO, UserProfile } from '@org/domain';
 import { USERS_SERVICE } from '../users/users.constants';
 import type { UsersService } from '../users/users.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class AuthService {
@@ -104,11 +105,36 @@ export class AuthService {
     return this.login(newUser);
   }
 
-  async me(userDTO: MeDTO) {
-    const user = await this.usersService.findByEmail(userDTO.email);
+  async forgotPassword(email: string) {
+    const user = await this.usersService.findByEmail(email);
     if (!user) throw new UnauthorizedException('User not found');
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { passwordHash, refreshTokenHash, ...result } = user;
-    return result;
+
+    const token = uuidv4();
+
+    const expiresAt = new Date();
+    expiresAt.setHours(expiresAt.getHours() + 1);
+
+    await this.usersService.setResetToken(user.id, token, expiresAt);
+
+    console.log(
+      `Reset Link: http://localhost:3000/reset-password?token=${token}`
+    );
+
+    return { message: 'Reset link sent', token: token };
+  }
+
+  async resetPassword(token: string, newPassword: string) {
+    const user = await this.usersService.findByResetToken(token);
+
+    if (!user) {
+      throw new UnauthorizedException('Invalid or expired reset token');
+    }
+
+    const hashedPassword = await this.hashPassword(newPassword);
+
+    await this.usersService.updatePassword(user.id, hashedPassword);
+    await this.usersService.cleanResetToken(user.id);
+
+    return { success: true };
   }
 }

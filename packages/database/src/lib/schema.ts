@@ -46,6 +46,8 @@ export const users = pgTable('users', {
   email: varchar('email', { length: 255 }).notNull().unique(),
   passwordHash: text('password_hash').notNull(),
   refreshTokenHash: text('refresh_token_hash'),
+  resetToken: text('reset_token'),
+  resetTokenExpires: timestamp('reset_token_expires', { mode: 'string' }),
   createdAt: timestamp('created_at', { mode: 'string' }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', { mode: 'string' }).defaultNow().notNull(),
 });

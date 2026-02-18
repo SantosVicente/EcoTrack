@@ -3,6 +3,7 @@ import { UsersService } from './users.service';
 import { DatabaseModule } from '../database/database.module';
 
 import { USERS_SERVICE } from './users.constants';
+import { UsersController } from './users.controller';
 
 @Module({
   imports: [DatabaseModule],
@@ -14,5 +15,6 @@ import { USERS_SERVICE } from './users.constants';
     },
   ],
   exports: [UsersService, USERS_SERVICE],
+  controllers: [UsersController],
 })
 export class UsersModule {}

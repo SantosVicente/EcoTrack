@@ -12,6 +12,8 @@ describe('AuthController', () => {
   const mockAuthService = {
     login: vi.fn(),
     refreshToken: vi.fn(),
+    forgotPassword: vi.fn(),
+    resetPassword: vi.fn(),
   };
 
   const mockJwtService = {
@@ -141,6 +143,49 @@ describe('AuthController', () => {
 
       expect(resMock.clearCookie).toHaveBeenCalledWith('access_token');
       expect(resMock.clearCookie).toHaveBeenCalledWith('refresh_token');
+    });
+  });
+
+  describe('forgotPassword', () => {
+    it('should call authService.forgotPassword', async () => {
+      const dto = { email: 'test@example.com' };
+      mockAuthService.forgotPassword = vi
+        .fn()
+        .mockResolvedValue({ message: 'sent' });
+
+      await controller.forgotPassword(dto);
+
+      expect(mockAuthService.forgotPassword).toHaveBeenCalledWith(dto.email);
+    });
+  });
+
+  describe('resetPassword', () => {
+    it('should call authService.resetPassword', async () => {
+      const dto = {
+        token: 'token',
+        newPassword: 'new',
+        confirmPassword: 'new',
+      };
+      mockAuthService.resetPassword = vi
+        .fn()
+        .mockResolvedValue({ success: true });
+
+      await controller.resetPassword(dto);
+
+      expect(mockAuthService.resetPassword).toHaveBeenCalledWith(
+        dto.token,
+        dto.newPassword
+      );
+    });
+
+    it('should throw UnauthorizedException if passwords do not match', async () => {
+      const dto = {
+        token: 'token',
+        newPassword: 'new',
+        confirmPassword: 'mismatch',
+      };
+
+      await expect(controller.resetPassword(dto)).rejects.toThrow();
     });
   });
 });

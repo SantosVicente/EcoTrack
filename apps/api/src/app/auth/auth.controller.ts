@@ -6,22 +6,22 @@ import {
   Body,
   Res,
   UnauthorizedException,
-  Get,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger';
-import { LoginDto, MeDTO, RegisterDTO, UserProfile } from '@org/domain';
+import {
+  ForgotPasswordDTO,
+  LoginDto,
+  RegisterDTO,
+  ResetPasswordDTO,
+  UserProfile,
+} from '@org/domain';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { Inject } from '@nestjs/common';
 import type { Request, Response } from 'express';
-import { AuthGuard } from '@nestjs/passport';
 
 interface RequestWithUser extends Request {
   user: UserProfile;
-}
-
-interface RequestWithMe extends Request {
-  user: MeDTO;
 }
 
 @ApiTags('Auth')
@@ -104,14 +104,42 @@ export class AuthController {
   @Post('register')
   @ApiOperation({ summary: 'Registra um novo usuário' })
   @ApiBody({ type: RegisterDTO })
-  async register(@Body() body: RegisterDTO) {
-    return this.authService.register(body);
+  async register(
+    @Body() body: RegisterDTO,
+    @Res({ passthrough: true }) res: Response
+  ) {
+    const { access_token, refresh_token, user } =
+      await this.authService.register(body);
+
+    res.cookie('access_token', access_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 3600 * 1000,
+    });
+
+    res.cookie('refresh_token', refresh_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 3600 * 1000,
+    });
+
+    return { user, access_token };
   }
 
-  @Get('me')
-  @ApiOperation({ summary: 'Retorna as informações do usuário autenticado' })
-  @UseGuards(AuthGuard('jwt'))
-  async me(@Req() req: RequestWithMe) {
-    return this.authService.me(req.user);
+  @Post('forgot-password')
+  @ApiOperation({ summary: 'Esqueceu a senha' })
+  async forgotPassword(@Body() body: ForgotPasswordDTO) {
+    return this.authService.forgotPassword(body.email);
+  }
+
+  @Post('reset-password')
+  @ApiOperation({ summary: 'Reseta a senha' })
+  async resetPassword(@Body() body: ResetPasswordDTO) {
+    if (body.newPassword !== body.confirmPassword) {
+      throw new UnauthorizedException('Passwords do not match');
+    }
+    return this.authService.resetPassword(body.token, body.newPassword);
   }
 }
