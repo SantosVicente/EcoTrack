@@ -51,3 +51,5 @@ test-output
 .env
 vitest.config.*.timestamp*
 graph.json
+
+packages/database/drizzle/*
